@@ -15,11 +15,11 @@ exports.handler = async function(event, context) {
     if (!userId) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ error: 'Missing userId in query string' }),
+        body: JSON.stringify({ error: 'Missing userId' }),
       };
     }
     
-    // Retrieve the document for this user from the "tracker" collection using the index.
+    // Try to get the document for this user.
     const doc = await client.query(
       q.Get(q.Match(q.Index("tracker_by_userId"), userId))
     );
@@ -29,10 +29,17 @@ exports.handler = async function(event, context) {
       body: JSON.stringify({ state: doc.data.state }),
     };
   } catch (error) {
+    // If error is due to document not existing, return empty state.
+    if (error.name === 'NotFound') {
+      return {
+        statusCode: 200,
+        body: JSON.stringify({ state: {} }),
+      };
+    }
     console.error('Error retrieving state:', error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: error.toString() }),
+      body: JSON.stringify({ error: error.message }),
     };
   }
 };

@@ -114,43 +114,83 @@
     </div>
   </section>
 
-      <!-- Parenting Advice Tab -->
-      <section id="parenting" class="tab-content">
-        <h1>Parenting Advice & Goals</h1>
-        <p>Use these interactive tools and reminders to support your parenting journey:</p>
-        
-        <div class="milestone-group">
-          <h2>Establish Routines</h2>
-          <ul>
-            <li><input type="checkbox" id="par1"> Set a consistent daily schedule (meals, play, bedtime)</li>
-            <li><input type="checkbox" id="par2"> Involve Aria in choosing between limited options</li>
-          </ul>
-        </div>
-        
-        <div class="milestone-group">
-          <h2>Positive Discipline</h2>
-          <ul>
-            <li><input type="checkbox" id="par3"> Praise specific good behaviors</li>
-            <li><input type="checkbox" id="par4"> Explain boundaries and natural consequences</li>
-          </ul>
-        </div>
-        
-        <div class="milestone-group">
-          <h2>Engagement & Learning</h2>
-          <ul>
-            <li><input type="checkbox" id="par5"> Read together daily and ask open-ended questions</li>
-            <li><input type="checkbox" id="par6"> Encourage imaginative play and problem solving</li>
-          </ul>
-        </div>
-        
-        <div class="milestone-group">
-          <h2>Self-Care & Reflection</h2>
-          <ul>
-            <li><input type="checkbox" id="par7"> Schedule regular "me-time" for self-care</li>
-            <li><input type="checkbox" id="par8"> Reflect on parenting challenges and adjust as needed</li>
-          </ul>
-        </div>
-      </section>
+<!-- Parenting Advice Tab -->
+<section id="parenting" class="tab-content">
+    <h1>Parenting Advice & Goals</h1>
+    <p>Use these interactive tools and reminders to support your parenting journey:</p>
+    
+    <!-- Parenting Goals Checklist -->
+    <div class="milestone-group">
+      <h2>Parenting Goals</h2>
+      <ul>
+        <li><input type="checkbox" id="par1"> Set a consistent daily schedule (meals, play, bedtime)</li>
+        <li><input type="checkbox" id="par2"> Involve your child in limited-choice decisions</li>
+        <li><input type="checkbox" id="par3"> Praise specific good behaviors daily</li>
+        <li><input type="checkbox" id="par4"> Establish clear, age‑appropriate boundaries</li>
+        <li><input type="checkbox" id="par5"> Engage in quality one‑on‑one time with your child</li>
+        <li><input type="checkbox" id="par6"> Schedule regular “me‑time” for self‑care</li>
+      </ul>
+    </div>
+    
+    <!-- Support Buttons for Common Issues -->
+    <div class="support-section">
+      <h2>Need Support?</h2>
+      <p>Click a button below to get advice on common challenges:</p>
+      <div class="support-buttons">
+        <button class="support-btn" data-modal="modal-stress">Managing Stress</button>
+        <button class="support-btn" data-modal="modal-worklife">Work–Life Balance</button>
+        <button class="support-btn" data-modal="modal-discipline">Consistent Discipline</button>
+        <button class="support-btn" data-modal="modal-digital">Digital Device Management</button>
+        <button class="support-btn" data-modal="modal-selfcare">Self‑Care Strategies</button>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Modal Markup for Support Advice -->
+  <!-- Modal: Managing Stress -->
+  <div id="modal-stress" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Managing Stress</h2>
+      <p>Research shows that stress is one of the biggest challenges for parents today. Some strategies include establishing a daily relaxation routine (like deep breathing or a short walk), reaching out to supportive friends or groups, and setting realistic expectations. Remember: It’s okay to ask for help—your well‑being is essential for effective parenting.</p>
+    </div>
+  </div>
+  
+  <!-- Modal: Work–Life Balance -->
+  <div id="modal-worklife" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Work–Life Balance</h2>
+      <p>Many parents struggle with balancing job responsibilities and home life. Try setting clear boundaries, scheduling family time in advance, and using tools like calendars or shared apps to coordinate tasks. Sometimes even small changes—like a “no work after dinner” rule—can make a big difference.</p>
+    </div>
+  </div>
+  
+  <!-- Modal: Consistent Discipline -->
+  <div id="modal-discipline" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Consistent Discipline</h2>
+      <p>Establishing clear and consistent discipline is essential. Experts recommend using positive reinforcement for good behavior and natural or logical consequences when rules are broken. Avoid harsh punishments; instead, focus on teaching why rules exist. Consistency and calm communication help children feel secure and understand expectations.</p>
+    </div>
+  </div>
+  
+  <!-- Modal: Digital Device Management -->
+  <div id="modal-digital" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Digital Device Management</h2>
+      <p>With screens everywhere, managing digital time is a common issue. Set clear limits, create tech‑free zones (like during meals), and be a good role model by limiting your own screen time. Encourage alternative activities such as outdoor play, reading, or board games to reduce dependency on devices.</p>
+    </div>
+  </div>
+  
+  <!-- Modal: Self‑Care Strategies -->
+  <div id="modal-selfcare" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Self‑Care Strategies</h2>
+      <p>Taking care of yourself is not selfish—it's essential. Prioritize sleep, regular exercise, healthy eating, and even brief breaks during your day. Consider mindfulness or meditation practices to center your thoughts, and don’t hesitate to seek professional support if feelings of depression or anxiety persist.</p>
+    </div>
+  </div>  
 
       <!-- Summary Tab -->
       <section id="summary" class="tab-content">

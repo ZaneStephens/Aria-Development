@@ -46,6 +46,32 @@ function switchTab(tabId) {
   document.querySelectorAll('input[type="checkbox"]').forEach(box => {
     box.addEventListener('change', saveState);
   });
+
+  // Modal functionality for support buttons
+document.querySelectorAll('.support-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      const modalId = button.getAttribute('data-modal');
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.style.display = 'block';
+      }
+    });
+  });
+  
+  // Close modals when the close button is clicked or when clicking outside the modal content
+  document.querySelectorAll('.modal').forEach(modal => {
+    // When the user clicks on <span class="close">, close the modal
+    modal.querySelector('.close').addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+    
+    // When the user clicks anywhere outside of the modal content, close it
+    window.addEventListener('click', (event) => {
+      if (event.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+  });  
   
   // ---------------------------
   // Backend Integration (Netlify Functions + FaunaDB)

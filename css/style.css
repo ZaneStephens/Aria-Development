@@ -26,8 +26,7 @@ body {
   padding: 2rem 1rem;
   display: flex;
   flex-direction: column;
-  /* Align items at the top */
-  justify-content: flex-start;
+  justify-content: flex-start;  /* Align at the top */
 }
 .sidebar ul {
   list-style: none;
@@ -84,40 +83,9 @@ p {
   color: #2a5d84;
   margin-bottom: 0.75rem;
 }
-
-/* Subheader for Expected and Advanced Milestones */
-.subheader {
-  font-size: 1.1rem;
-  color: #1f4561;
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 0.25rem;
-}
-
-/* Separate expected and advanced lists */
-ul.expected,
-ul.advanced {
+.milestone-group ul {
   list-style: none;
-  margin-bottom: 1rem;
 }
-ul.advanced li {
-  /* Optionally, you can italicize advanced milestones or use a different color */
-  font-style: italic;
-  color: #d9534f;
-}
-
-/* Badge for Advanced Milestones */
-.badge {
-  background: #d9534f;
-  color: #fff;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 0.75rem;
-  margin-left: 0.5rem;
-}
-
-/* List Item Styles */
 .milestone-group li {
   padding: 0.5rem 0;
   font-size: 1rem;
@@ -131,35 +99,76 @@ ul.advanced li {
   cursor: pointer;
 }
 
-/* Button Styles */
-button {
+/* Support Section */
+.support-section {
+  background: #e9f2fa;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 8px;
+  text-align: center;
+}
+.support-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+.support-btn {
   background: #2a5d84;
   color: #fff;
   border: none;
-  padding: 1rem 2rem;
+  padding: 0.75rem 1.25rem;
   border-radius: 8px;
-  font-size: 1rem;
   cursor: pointer;
   transition: background 0.3s, transform 0.2s;
-  margin-top: 1rem;
-  display: block;
-  width: 100%;
-  max-width: 300px;
-  margin-left: auto;
-  margin-right: auto;
 }
-button:hover {
+.support-btn:hover {
   background: #1f4561;
   transform: translateY(-2px);
 }
 
-/* Summary styles */
-#summaryContent {
-  margin-top: 1.5rem;
+/* Modal Styles */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background: rgba(0,0,0,0.5);
+  padding-top: 60px;
 }
-.recommendation {
+.modal-content {
+  background: #fff;
+  margin: 5% auto;
+  padding: 2rem;
+  border: 1px solid #888;
+  width: 90%;
+  max-width: 600px;
+  border-radius: 8px;
+  position: relative;
+}
+.modal-content h2 {
+  margin-bottom: 1rem;
+}
+.modal-content p {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.close {
+  color: #aaa;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
   font-weight: bold;
-  margin-top: 0.5rem;
+  cursor: pointer;
+}
+.close:hover,
+.close:focus {
+  color: #000;
 }
 
 /* Responsive Design for Mobile */
