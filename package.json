@@ -19,6 +19,7 @@
   "homepage": "https://github.com/ZaneStephens/Aria-Development#readme",
   "description": "",
   "dependencies": {
+    "@netlify/blobs": "^8.1.0",
     "faunadb": "^4.8.2"
   }
 }

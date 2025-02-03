@@ -1,7 +1,7 @@
 const { getStore } = require("@netlify/blobs");
 
 exports.handler = async function (event) {
-    if (event.httpMethod !== "GET") {
+    if (event.httpMethod !== "DELETE") {
         return { statusCode: 405, body: "Method Not Allowed" };
     }
 
@@ -16,20 +16,14 @@ exports.handler = async function (event) {
     try {
         const store = getStore({ name: "child-tracker-store" });
 
-        const data = await store.get(`user_${userId}`);
-        if (!data) {
-            return {
-                statusCode: 200,
-                body: JSON.stringify({ state: {} }), // No saved state yet
-            };
-        }
+        await store.delete(`user_${userId}`);
 
         return {
             statusCode: 200,
-            body: JSON.stringify({ state: JSON.parse(data) }),
+            body: JSON.stringify({ message: "State deleted successfully" }),
         };
     } catch (error) {
-        console.error("Error retrieving state:", error);
+        console.error("Error deleting state:", error);
         return {
             statusCode: 500,
             body: JSON.stringify({ error: error.toString() }),
