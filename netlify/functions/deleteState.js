@@ -5,16 +5,18 @@ exports.handler = async function (event) {
         return { statusCode: 405, body: "Method Not Allowed" };
     }
 
-    const { userId } = event.queryStringParameters;
+    let { userId } = event.queryStringParameters;
+    
+    // If no userId is provided, default to "defaultUser"
     if (!userId) {
-        return {
-            statusCode: 400,
-            body: JSON.stringify({ error: "Missing userId in query string" }),
-        };
+        userId = "defaultUser"; 
     }
 
     try {
-        const store = getStore({ name: "child-tracker-store" });
+        const store = getStore({
+            name: "child-tracker-store",
+            auth: { token: process.env.NETLIFY_PERSONAL_ACCESS_TOKEN }
+        });
 
         await store.delete(`user_${userId}`);
 

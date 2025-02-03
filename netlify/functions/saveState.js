@@ -12,11 +12,11 @@ exports.handler = async function (event) {
         return { statusCode: 400, body: JSON.stringify({ error: "Invalid JSON" }) };
     }
 
-    const { userId, state } = data;
-    if (!userId || !state) {
+    const state = data.state; // No userId needed
+    if (!state) {
         return {
             statusCode: 400,
-            body: JSON.stringify({ error: "Missing userId or state" }),
+            body: JSON.stringify({ error: "Missing state data" }),
         };
     }
 
@@ -28,7 +28,7 @@ exports.handler = async function (event) {
             }
         });
 
-        await store.set(`user_${userId}`, JSON.stringify(state));
+        await store.set("sharedState", JSON.stringify(state)); // Use a shared key
 
         return {
             statusCode: 200,

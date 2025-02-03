@@ -5,14 +5,6 @@ exports.handler = async function (event) {
         return { statusCode: 405, body: "Method Not Allowed" };
     }
 
-    const { userId } = event.queryStringParameters;
-    if (!userId) {
-        return {
-            statusCode: 400,
-            body: JSON.stringify({ error: "Missing userId in query string" }),
-        };
-    }
-
     try {
         const store = getStore({
             name: "child-tracker-store",
@@ -21,7 +13,7 @@ exports.handler = async function (event) {
             }
         });
 
-        const data = await store.get(`user_${userId}`);
+        const data = await store.get("sharedState"); // Use a shared key
         if (!data) {
             return {
                 statusCode: 200,

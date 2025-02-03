@@ -73,23 +73,25 @@ document.querySelectorAll('.support-btn').forEach(button => {
     });
   });  
   
-  // ---------------------------
-  // Backend Integration
-  // ---------------------------
-  
-  // Generate a simple userId if not already present.
-  // In a production system, you’d use authentication.
-  function generateUserId() {
+ // ---------------------------
+// Backend Integration
+// ---------------------------
+
+// Use a default user if no userId exists.
+function generateUserId() {
     return 'user_' + Math.random().toString(36).substr(2, 9);
-  }
-  
-  let userId = localStorage.getItem('userId');
-  if (!userId) {
-    userId = generateUserId();
+}
+
+// Attempt to retrieve a user ID from localStorage
+let userId = localStorage.getItem('userId');
+
+// If no userId exists, use the default user
+if (!userId) {
+    userId = "defaultUser"; // Shared state for all users
     localStorage.setItem('userId', userId);
-  }
-  
-  async function saveStateToBackend() {
+}
+
+async function saveStateToBackend() {
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
     let stateData = {};
     checkboxes.forEach(box => {
@@ -100,7 +102,7 @@ document.querySelectorAll('.support-btn').forEach(button => {
         const response = await fetch('/.netlify/functions/saveState', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userId, state: stateData })
+            body: JSON.stringify({ userId, state: stateData }) // Always sends a userId
         });
         const result = await response.json();
         console.log('State saved to backend:', result);
@@ -126,8 +128,27 @@ async function loadStateFromBackend() {
     }
 }
 
+async function deleteStateFromBackend() {
+    try {
+        const response = await fetch(`/.netlify/functions/deleteState?userId=${userId}`, {
+            method: 'DELETE'
+        });
+        const result = await response.json();
+        console.log('State deleted from backend:', result);
+
+        // Reset UI
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(box => box.checked = false);
+    } catch (error) {
+        console.error('Error deleting state from backend:', error);
+    }
+}
+
+// Example button to trigger deletion
+document.getElementById("resetButton").addEventListener("click", deleteStateFromBackend);
+
 document.addEventListener('DOMContentLoaded', loadStateFromBackend);
-  
+
   // ---------------------------
   // Summary Generation
   // ---------------------------
