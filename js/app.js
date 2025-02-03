@@ -140,57 +140,130 @@ document.querySelectorAll('.support-btn').forEach(button => {
   // ---------------------------
   // Summary Generation
   // ---------------------------
-  function generateSummary() {
-    let summaryText = '<h2>Development Summary</h2>';
-    const areas = [
-      { name: 'Gross Motor Skills', expected: ['gm1', 'gm2', 'gm3', 'gm4', 'gm5'] },
-      { name: 'Fine Motor Skills', expected: ['fm1', 'fm2', 'fm3', 'fm4'] },
-      { name: 'Language & Communication', expected: ['lang1', 'lang2', 'lang3', 'lang4'] },
-      { name: 'Social & Emotional Development', expected: ['se1', 'se2', 'se3', 'se4'] },
-      { name: 'Cognitive Development', expected: ['cog1', 'cog2', 'cog3', 'cog4'] }
+  // Enhanced Summary Generation Function: Detailed, Personalized Report Card
+function generateSummary() {
+    let summaryText = '<h2>Child Development Report Card</h2>';
+  
+    // Define each developmental area with IDs and tailored recommendations
+    const devAreas = [
+      {
+        name: 'Gross Motor Skills',
+        expected: ['gm1', 'gm2', 'gm3', 'gm4', 'gm5'],
+        advanced: ['gm6', 'gm7', 'gm8'],
+        recExpected: "Try fun activities like obstacle courses, dancing, or playing catch to improve balance and coordination.",
+        recAdvanced: "Boost advanced skills with skipping games, hopping challenges, or targeted ball-throwing drills."
+      },
+      {
+        name: 'Fine Motor Skills',
+        expected: ['fm1', 'fm2', 'fm3'],
+        advanced: ['fm4', 'fm5', 'fm6'],
+        recExpected: "Encourage drawing, finger painting, and simple puzzles to strengthen hand–eye coordination.",
+        recAdvanced: "Advance these skills with tracing letters, cutting out shapes, or assembling small models."
+      },
+      {
+        name: 'Language & Communication',
+        expected: ['lang1', 'lang2', 'lang3'],
+        advanced: ['lang4', 'lang5', 'lang6'],
+        recExpected: "Spend time reading together, storytelling, and engaging in conversation to boost vocabulary.",
+        recAdvanced: "Encourage detailed retelling of events, ask 'why' questions, and expand descriptive language during daily chats."
+      },
+      {
+        name: 'Social & Emotional Development',
+        expected: ['se1', 'se2', 'se3'],
+        advanced: ['se4', 'se5', 'se6'],
+        recExpected: "Arrange regular playdates, role-play sharing and turn-taking, and talk about feelings to nurture basic social skills.",
+        recAdvanced: "Help your child lead group activities, practice empathy in resolving conflicts, and express emotions clearly."
+      },
+      {
+        name: 'Cognitive Development',
+        expected: ['cog1', 'cog2', 'cog3'],
+        advanced: ['cog4', 'cog5', 'cog6'],
+        recExpected: "Incorporate matching games, counting exercises, and simple puzzles to enhance basic cognitive skills.",
+        recAdvanced: "Challenge your child with multi-attribute sorting games, memory challenges, or problem-solving tasks like building structures."
+      }
     ];
-    
-    areas.forEach(area => {
-      let achieved = 0;
+  
+    // Process each developmental area and build its "report card" section
+    devAreas.forEach(area => {
+      let expCount = 0;
       area.expected.forEach(id => {
         const chk = document.getElementById(id);
-        if (chk && chk.checked) {
-          achieved++;
-        }
+        if (chk && chk.checked) expCount++;
       });
+      let advCount = 0;
+      area.advanced.forEach(id => {
+        const chk = document.getElementById(id);
+        if (chk && chk.checked) advCount++;
+      });
+      
+      const expectedPerc = expCount / area.expected.length;
+      const advancedPerc = advCount / area.advanced.length;
+      
+      summaryText += `<div class="area-summary">`;
       summaryText += `<h3>${area.name}</h3>`;
-      summaryText += `<p>Achieved ${achieved} out of ${area.expected.length} milestones.</p>`;
-      summaryText += achieved < area.expected.length ?
-        `<p class="recommendation" style="color: red;">Focus on this area by engaging in more practice and play.</p>` :
-        `<p class="recommendation" style="color: green;">Great job! This area is well developed.</p>`;
+      summaryText += `<p><strong>Expected Milestones:</strong> ${expCount} of ${area.expected.length} (${Math.round(expectedPerc * 100)}%)</p>`;
+      
+      if (expectedPerc < 0.5) {
+        summaryText += `<p class="recommendation" style="color: #d9534f;">Your child is still building the basics. <br>Action: ${area.recExpected}</p>`;
+      } else if (expectedPerc < 1) {
+        summaryText += `<p class="recommendation" style="color: #f0ad4e;">Good progress on the basics, but there's room to improve. <br>Action: Continue reinforcing these skills through regular practice and fun challenges.</p>`;
+      } else {
+        summaryText += `<p class="recommendation" style="color: #5cb85c;">Excellent work on the basics! Your child has mastered the expected skills.</p>`;
+      }
+      
+      summaryText += `<p><strong>Advanced Milestones:</strong> ${advCount} of ${area.advanced.length} (${Math.round(advancedPerc * 100)}%)</p>`;
+      
+      if (advancedPerc < 0.5) {
+        summaryText += `<p class="recommendation" style="color: #d9534f;">Advanced skills are emerging. <br>Action: ${area.recAdvanced}</p>`;
+      } else if (advancedPerc < 1) {
+        summaryText += `<p class="recommendation" style="color: #f0ad4e;">Your child is making strides in advanced areas, but a few challenges remain. <br>Action: Incorporate extra practice sessions focused on these skills.</p>`;
+      } else {
+        summaryText += `<p class="recommendation" style="color: #5cb85c;">Outstanding advanced performance! Your child is excelling in this area.</p>`;
+      }
+      summaryText += `</div>`;
     });
-    
+  
+    // Parenting Goals Summary with a Detailed Report
     const parentingGoals = [
-      { name: 'Establish Routines', expected: ['par1', 'par2'] },
-      { name: 'Positive Discipline', expected: ['par3', 'par4'] },
-      { name: 'Engagement & Learning', expected: ['par5', 'par6'] },
-      { name: 'Self-Care & Reflection', expected: ['par7', 'par8'] }
+      { id: 'par1', label: 'Establish Daily Schedule' },
+      { id: 'par2', label: 'Involve Child in Decisions' },
+      { id: 'par3', label: 'Give Specific Praise Daily' },
+      { id: 'par4', label: 'Set Clear Boundaries' },
+      { id: 'par5', label: 'Quality One-on-One Time' },
+      { id: 'par6', label: 'Regular Self-Care' },
+      { id: 'par7', label: 'Track Parenting Wins' },
+      { id: 'par8', label: 'Monthly Goal Reviews' },
+      { id: 'par9', label: 'Maintain a Win Journal' },
+      { id: 'par10', label: 'Implement New Strategy Monthly' }
     ];
     
-    summaryText += `<h2>Parenting Goals Summary</h2>`;
+    let pgCount = 0;
+    let pgDetails = '<ul class="parenting-report">';
     parentingGoals.forEach(goal => {
-      let achieved = 0;
-      goal.expected.forEach(id => {
-        const chk = document.getElementById(id);
-        if (chk && chk.checked) {
-          achieved++;
-        }
-      });
-      summaryText += `<h3>${goal.name}</h3>`;
-      summaryText += `<p>Achieved ${achieved} out of ${goal.expected.length} goals.</p>`;
-      summaryText += achieved < goal.expected.length ?
-        `<p class="recommendation" style="color: orange;">Keep working on these areas for a balanced approach.</p>` :
-        `<p class="recommendation" style="color: green;">Excellent! You're hitting your parenting goals.</p>`;
+      const chk = document.getElementById(goal.id);
+      const status = (chk && chk.checked) ? '✅ Achieved' : '❌ Pending';
+      if (chk && chk.checked) { pgCount++; }
+      pgDetails += `<li><strong>${goal.label}:</strong> ${status}</li>`;
     });
+    pgDetails += '</ul>';
+    
+    summaryText += '<h2>Parenting Goals Report</h2>';
+    summaryText += pgDetails;
+    
+    const pgRatio = pgCount / parentingGoals.length;
+    summaryText += '<div class="encouragement">';
+    if (pgRatio < 0.5) {
+      summaryText += `<p style="color: #d9534f;">Your parenting journey is just beginning—focus on implementing one new strategy at a time and celebrate every small win. Remember, progress is progress!</p>`;
+    } else if (pgRatio < 1) {
+      summaryText += `<p style="color: #f0ad4e;">Great progress! You’re steadily building a strong foundation for your family. Keep refining your approach and try to add one more goal next month.</p>`;
+    } else {
+      summaryText += `<p style="color: #5cb85c;">Outstanding achievement! You’re consistently meeting your parenting goals. Keep up the excellent work and continue evolving your strategies as your child grows.</p>`;
+    }
+    summaryText += '</div>';
     
     document.getElementById('summaryContent').innerHTML = summaryText;
   }
   
   // Attach event listener to the Generate Summary button
-  document.getElementById('generateSummaryBtn').addEventListener('click', generateSummary);
+  document.getElementById('generateSummaryBtn').addEventListener('click', generateSummary);  
   
