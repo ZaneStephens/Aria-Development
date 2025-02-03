@@ -14,7 +14,12 @@ exports.handler = async function (event) {
     }
 
     try {
-        const store = getStore({ name: "child-tracker-store" });
+        const store = getStore({
+            name: "child-tracker-store",
+            auth: { 
+                token: process.env.NETLIFY_PERSONAL_ACCESS_TOKEN 
+            }
+        });
 
         const data = await store.get(`user_${userId}`);
         if (!data) {
