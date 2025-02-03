@@ -16,6 +16,7 @@
         <li class="tab-link active" data-tab="development">Child Development</li>
         <li class="tab-link" data-tab="parenting">Parenting Advice</li>
         <li class="tab-link" data-tab="summary">Summary</li>
+        <li class="tab-link" data-tab="diary">Diary</li>
       </ul>
     </nav>
 
@@ -195,6 +196,30 @@
       <p>Taking care of yourself is not selfish—it's essential. Prioritize sleep, regular exercise, healthy eating, and even brief breaks during your day. Consider mindfulness or meditation practices to center your thoughts, and don’t hesitate to seek professional support if feelings of depression or anxiety persist.</p>
     </div>
   </div>  
+
+  <!-- Diary Tab -->
+  <section id="diary" class="tab-content">
+    <h1>Achievement Diary</h1>
+    <div id="diaryContent">
+      <!-- Diary entries will be dynamically loaded here -->
+    </div>
+  </section>
+</main>
+</div>
+
+<!-- Achievement Logging Modal -->
+<div id="achievementModal" class="modal">
+<div class="modal-content">
+  <span class="close">&times;</span>
+  <h2>Log Achievement Details</h2>
+  <p id="achievementLabel"></p>
+  <textarea id="achievementNotes" placeholder="Enter any details or notes (optional)"></textarea>
+  <div class="modal-buttons">
+    <button id="submitAchievement">Submit</button>
+    <button id="skipAchievement">Skip</button>
+  </div>
+</div>
+</div>
 
       <!-- Summary Tab -->
       <section id="summary" class="tab-content">

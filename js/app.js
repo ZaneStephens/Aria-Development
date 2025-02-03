@@ -265,5 +265,117 @@ function generateSummary() {
   }
   
   // Attach event listener to the Generate Summary button
-  document.getElementById('generateSummaryBtn').addEventListener('click', generateSummary);  
+  document.getElementById('generateSummaryBtn').addEventListener('click', generateSummary);
+
+// ---------------------------
+// Achievement Logging and Diary Functionality
+// ---------------------------
+
+let currentAchievementCheckbox = null;
+
+// When a checkbox is changed, prompt for achievement details if it’s newly checked
+function handleCheckboxForDiary(event) {
+  const checkbox = event.target;
+  // Only trigger if checkbox is checked and not already logged
+  if (checkbox.checked && !checkbox.dataset.logged) {
+    currentAchievementCheckbox = checkbox;
+    // Assume the achievement text is the text content of the parent li (excluding the checkbox)
+    const achievementText = checkbox.parentElement.textContent.trim();
+    document.getElementById('achievementLabel').textContent = achievementText;
+    // Clear any previous notes
+    document.getElementById('achievementNotes').value = '';
+    // Show the modal
+    document.getElementById('achievementModal').style.display = 'block';
+  }
+}
+
+// Attach handler to all checkboxes
+document.querySelectorAll('input[type="checkbox"]').forEach(box => {
+  box.addEventListener('change', handleCheckboxForDiary);
+});
+
+// Modal handling for achievement logging
+const achievementModal = document.getElementById('achievementModal');
+const closeModal = achievementModal.querySelector('.close');
+
+closeModal.addEventListener('click', () => {
+  achievementModal.style.display = 'none';
+});
+
+document.getElementById('submitAchievement').addEventListener('click', () => {
+  const notes = document.getElementById('achievementNotes').value.trim();
+  logAchievement(notes);
+  achievementModal.style.display = 'none';
+});
+
+document.getElementById('skipAchievement').addEventListener('click', () => {
+  logAchievement('');
+  achievementModal.style.display = 'none';
+});
+
+function logAchievement(notes) {
+  if (!currentAchievementCheckbox) return;
+  // Mark this checkbox as logged so that we do not prompt again
+  currentAchievementCheckbox.dataset.logged = "true";
+  // Create a diary entry with timestamp
+  const timestamp = new Date().toISOString();
+  const achievementText = currentAchievementCheckbox.parentElement.textContent.trim();
+  const diaryEntry = {
+    id: currentAchievementCheckbox.id,
+    achievement: achievementText,
+    note: notes,
+    timestamp: timestamp
+  };
+  // Retrieve existing diary entries from localStorage (or initialize an empty array)
+  let diaryEntries = JSON.parse(localStorage.getItem('diaryEntries')) || [];
+  diaryEntries.push(diaryEntry);
+  localStorage.setItem('diaryEntries', JSON.stringify(diaryEntries));
+  // Update the Diary tab view
+  loadDiary();
+  // Clear currentAchievementCheckbox for future logging
+  currentAchievementCheckbox = null;
+}
+
+// Function to load diary entries and display them in the Diary tab, grouped by date
+function loadDiary() {
+  const diaryContainer = document.getElementById('diaryContent');
+  let diaryEntries = JSON.parse(localStorage.getItem('diaryEntries')) || [];
   
+  // Sort entries by timestamp ascending (oldest first) or descending as you prefer
+  diaryEntries.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+  
+  // Group entries by date (YYYY-MM-DD)
+  const groupedEntries = {};
+  diaryEntries.forEach(entry => {
+    const date = entry.timestamp.split('T')[0]; // Extract date part
+    if (!groupedEntries[date]) {
+      groupedEntries[date] = [];
+    }
+    groupedEntries[date].push(entry);
+  });
+  
+  // Build HTML to display entries grouped by date
+  let output = '';
+  // Optionally, sort dates descending (most recent first)
+  const sortedDates = Object.keys(groupedEntries).sort((a, b) => new Date(b) - new Date(a));
+  sortedDates.forEach(date => {
+    output += `<div class="diary-date-group">`;
+    output += `<h3>${date}</h3>`;
+    groupedEntries[date].forEach(entry => {
+      // Format the time portion of the timestamp
+      const time = new Date(entry.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+      output += `<div class="diary-entry">`;
+      output += `<p><strong>${time}</strong>: ${entry.achievement}</p>`;
+      if (entry.note) {
+        output += `<p class="diary-note">Note: ${entry.note}</p>`;
+      }
+      output += `</div>`;
+    });
+    output += `</div>`;
+  });
+  
+  diaryContainer.innerHTML = output;
+}
+
+// Load diary entries on page load so that the Diary tab is up to date
+window.addEventListener('load', loadDiary); 
