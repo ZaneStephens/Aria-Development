@@ -12,7 +12,7 @@ exports.handler = async function (event) {
         return { statusCode: 400, body: JSON.stringify({ error: "Invalid JSON" }) };
     }
 
-    const state = data.state; // No userId needed
+    const { state } = data;
     if (!state) {
         return {
             statusCode: 400,
@@ -21,14 +21,16 @@ exports.handler = async function (event) {
     }
 
     try {
+        console.log("Using Site ID:", process.env.NETLIFY_BLOBS_SITE_ID);
+        console.log("Using Access Token:", process.env.NETLIFY_PERSONAL_ACCESS_TOKEN ? "Exists ✅" : "Missing ❌");
+
         const store = getStore({
             name: "child-tracker-store",
-            auth: { 
-                token: process.env.NETLIFY_PERSONAL_ACCESS_TOKEN 
-            }
+            siteID: process.env.NETLIFY_BLOBS_SITE_ID,
+            auth: { token: process.env.NETLIFY_PERSONAL_ACCESS_TOKEN }
         });
 
-        await store.set("sharedState", JSON.stringify(state)); // Use a shared key
+        await store.set("sharedState", JSON.stringify(state));
 
         return {
             statusCode: 200,

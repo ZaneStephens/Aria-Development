@@ -6,18 +6,20 @@ exports.handler = async function (event) {
     }
 
     try {
+        console.log("Using Site ID:", process.env.NETLIFY_BLOBS_SITE_ID);
+        console.log("Using Access Token:", process.env.NETLIFY_PERSONAL_ACCESS_TOKEN ? "Exists ✅" : "Missing ❌");
+
         const store = getStore({
             name: "child-tracker-store",
-            auth: { 
-                token: process.env.NETLIFY_PERSONAL_ACCESS_TOKEN 
-            }
+            siteID: process.env.NETLIFY_BLOBS_SITE_ID,
+            auth: { token: process.env.NETLIFY_PERSONAL_ACCESS_TOKEN }
         });
 
-        const data = await store.get("sharedState"); // Use a shared key
+        const data = await store.get("sharedState");
         if (!data) {
             return {
                 statusCode: 200,
-                body: JSON.stringify({ state: {} }), // No saved state yet
+                body: JSON.stringify({ state: {} }),
             };
         }
 
