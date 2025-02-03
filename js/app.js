@@ -73,7 +73,7 @@ document.querySelectorAll('.support-btn').forEach(button => {
     });
   });  
   
- // ---------------------------
+// ---------------------------
 // Backend Integration
 // ---------------------------
 
@@ -102,7 +102,7 @@ async function saveStateToBackend() {
         const response = await fetch('/.netlify/functions/saveState', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userId, state: stateData }) // Always sends a userId
+            body: JSON.stringify({ state: stateData }) // No userId needed
         });
         const result = await response.json();
         console.log('State saved to backend:', result);
@@ -113,7 +113,7 @@ async function saveStateToBackend() {
 
 async function loadStateFromBackend() {
     try {
-        const response = await fetch(`/.netlify/functions/getState?userId=${userId}`);
+        const response = await fetch('/.netlify/functions/getState'); // No userId needed
         const result = await response.json();
         console.log('Loaded state:', result);
 
@@ -130,7 +130,7 @@ async function loadStateFromBackend() {
 
 async function deleteStateFromBackend() {
     try {
-        const response = await fetch(`/.netlify/functions/deleteState?userId=${userId}`, {
+        const response = await fetch('/.netlify/functions/deleteState', { // No userId needed
             method: 'DELETE'
         });
         const result = await response.json();
@@ -144,10 +144,15 @@ async function deleteStateFromBackend() {
     }
 }
 
-// Example button to trigger deletion
-document.getElementById("resetButton").addEventListener("click", deleteStateFromBackend);
-
-document.addEventListener('DOMContentLoaded', loadStateFromBackend);
+// Ensure reset button exists before adding event listener
+document.addEventListener("DOMContentLoaded", () => {
+    loadStateFromBackend();
+    
+    const resetButton = document.getElementById("resetButton");
+    if (resetButton) {
+        resetButton.addEventListener("click", deleteStateFromBackend);
+    }
+});
 
   // ---------------------------
   // Summary Generation
