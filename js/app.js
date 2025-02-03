@@ -74,7 +74,7 @@ document.querySelectorAll('.support-btn').forEach(button => {
   });  
   
   // ---------------------------
-  // Backend Integration (Netlify Functions + FaunaDB)
+  // Backend Integration
   // ---------------------------
   
   // Generate a simple userId if not already present.
@@ -89,53 +89,44 @@ document.querySelectorAll('.support-btn').forEach(button => {
     localStorage.setItem('userId', userId);
   }
   
-  // Save the full state to the backend
   async function saveStateToBackend() {
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
     let stateData = {};
     checkboxes.forEach(box => {
-      stateData[box.id] = box.checked;
+        stateData[box.id] = box.checked;
     });
-    
+
     try {
-      const response = await fetch('/.netlify/functions/saveState', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, state: stateData })
-      });
-      const result = await response.json();
-      console.log('State saved to backend:', result);
-    } catch (error) {
-      console.error('Error saving state to backend:', error);
-    }
-  }
-  
-  // Load state from the backend
-  async function loadStateFromBackend() {
-    try {
-      const response = await fetch(`/.netlify/functions/getState?userId=${userId}`);
-      if (response.status === 200) {
+        const response = await fetch('/.netlify/functions/saveState', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId, state: stateData })
+        });
         const result = await response.json();
-        const stateData = result.state;
+        console.log('State saved to backend:', result);
+    } catch (error) {
+        console.error('Error saving state to backend:', error);
+    }
+}
+
+async function loadStateFromBackend() {
+    try {
+        const response = await fetch(`/.netlify/functions/getState?userId=${userId}`);
+        const result = await response.json();
+        console.log('Loaded state:', result);
+
         const checkboxes = document.querySelectorAll('input[type="checkbox"]');
         checkboxes.forEach(box => {
-          if (stateData.hasOwnProperty(box.id)) {
-            box.checked = stateData[box.id];
-          }
+            if (result.state && result.state.hasOwnProperty(box.id)) {
+                box.checked = result.state[box.id];
+            }
         });
-      } else {
-        console.log('No saved state found on backend');
-      }
     } catch (error) {
-      console.error('Error loading state from backend:', error);
+        console.error('Error loading state from backend:', error);
     }
-  }
-  
-  // Load backend state on page load (in addition to localStorage)
-  window.addEventListener('load', () => {
-    loadState();
-    loadStateFromBackend();
-  });
+}
+
+document.addEventListener('DOMContentLoaded', loadStateFromBackend);
   
   // ---------------------------
   // Summary Generation
