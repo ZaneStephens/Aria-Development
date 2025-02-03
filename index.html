@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Child Development & Parenting Tracker</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+      <ul>
+        <li class="tab-link active" data-tab="development">Child Development</li>
+        <li class="tab-link" data-tab="parenting">Parenting Advice</li>
+        <li class="tab-link" data-tab="summary">Summary</li>
+      </ul>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="content">
+      <!-- Child Development Tab -->
+      <section id="development" class="tab-content active">
+        <h1>Child Development Milestones (3–4 Years)</h1>
+        <p>Track Aria’s progress in these key developmental areas:</p>
+        
+        <!-- Gross Motor Skills -->
+        <div class="milestone-group">
+          <h2>Gross Motor Skills</h2>
+          <ul>
+            <li><input type="checkbox" id="gm1"> Runs smoothly and changes direction</li>
+            <li><input type="checkbox" id="gm2"> Jumps with both feet off the ground</li>
+            <li><input type="checkbox" id="gm3"> Climbs stairs with alternating feet</li>
+            <li><input type="checkbox" id="gm4"> Rides a tricycle confidently</li>
+            <li><input type="checkbox" id="gm5"> Balances on one foot for a few seconds</li>
+          </ul>
+        </div>
+        
+        <!-- Fine Motor Skills -->
+        <div class="milestone-group">
+          <h2>Fine Motor Skills</h2>
+          <ul>
+            <li><input type="checkbox" id="fm1"> Draws simple shapes (circles and squares)</li>
+            <li><input type="checkbox" id="fm2"> Uses child-safe scissors (with supervision)</li>
+            <li><input type="checkbox" id="fm3"> Copies letters or numbers</li>
+            <li><input type="checkbox" id="fm4"> Manipulates small objects (puzzles, building blocks)</li>
+          </ul>
+        </div>
+        
+        <!-- Language & Communication -->
+        <div class="milestone-group">
+          <h2>Language & Communication</h2>
+          <ul>
+            <li><input type="checkbox" id="lang1"> Speaks in full sentences</li>
+            <li><input type="checkbox" id="lang2"> Follows simple multi-step instructions</li>
+            <li><input type="checkbox" id="lang3"> Tells simple stories with a beginning, middle, and end</li>
+            <li><input type="checkbox" id="lang4"> Uses a wide vocabulary and correct pronouns</li>
+          </ul>
+        </div>
+        
+        <!-- Social & Emotional -->
+        <div class="milestone-group">
+          <h2>Social & Emotional Development</h2>
+          <ul>
+            <li><input type="checkbox" id="se1"> Plays cooperatively with peers</li>
+            <li><input type="checkbox" id="se2"> Expresses a range of emotions appropriately</li>
+            <li><input type="checkbox" id="se3"> Shows empathy towards others</li>
+            <li><input type="checkbox" id="se4"> Takes turns and shares toys (when ready)</li>
+          </ul>
+        </div>
+        
+        <!-- Cognitive -->
+        <div class="milestone-group">
+          <h2>Cognitive Development</h2>
+          <ul>
+            <li><input type="checkbox" id="cog1"> Recognises colours and shapes</li>
+            <li><input type="checkbox" id="cog2"> Counts to 10 (or higher)</li>
+            <li><input type="checkbox" id="cog3"> Solves simple puzzles</li>
+            <li><input type="checkbox" id="cog4"> Understands basic time concepts (today, tomorrow, yesterday)</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Parenting Advice Tab -->
+      <section id="parenting" class="tab-content">
+        <h1>Parenting Advice & Goals</h1>
+        <p>Use these interactive tools and reminders to support your parenting journey:</p>
+        
+        <div class="milestone-group">
+          <h2>Establish Routines</h2>
+          <ul>
+            <li><input type="checkbox" id="par1"> Set a consistent daily schedule (meals, play, bedtime)</li>
+            <li><input type="checkbox" id="par2"> Involve Aria in choosing between limited options</li>
+          </ul>
+        </div>
+        
+        <div class="milestone-group">
+          <h2>Positive Discipline</h2>
+          <ul>
+            <li><input type="checkbox" id="par3"> Praise specific good behaviors</li>
+            <li><input type="checkbox" id="par4"> Explain boundaries and natural consequences</li>
+          </ul>
+        </div>
+        
+        <div class="milestone-group">
+          <h2>Engagement & Learning</h2>
+          <ul>
+            <li><input type="checkbox" id="par5"> Read together daily and ask open-ended questions</li>
+            <li><input type="checkbox" id="par6"> Encourage imaginative play and problem solving</li>
+          </ul>
+        </div>
+        
+        <div class="milestone-group">
+          <h2>Self-Care & Reflection</h2>
+          <ul>
+            <li><input type="checkbox" id="par7"> Schedule regular "me-time" for self-care</li>
+            <li><input type="checkbox" id="par8"> Reflect on parenting challenges and adjust as needed</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Summary Tab -->
+      <section id="summary" class="tab-content">
+        <h1>Development & Parenting Summary</h1>
+        <div id="summaryContent">
+          <!-- The summary will be generated here -->
+        </div>
+        <button id="generateSummaryBtn">Generate Summary</button>
+      </section>
+    </main>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
