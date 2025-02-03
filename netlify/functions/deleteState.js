@@ -14,12 +14,12 @@ exports.handler = async function (event) {
 
     try {
         console.log("Using Site ID:", process.env.NETLIFY_BLOBS_SITE_ID);
-        console.log("Using Access Token:", process.env.NETLIFY_PERSONAL_ACCESS_TOKEN ? "Exists ✅" : "Missing ❌");
+        console.log("Using Access Token:", process.env.NETLIFY_BLOBS_ACCESS_TOKEN ? "Exists ✅" : "Missing ❌");
 
         const store = getStore({
             name: "child-tracker-store",
             siteID: process.env.NETLIFY_BLOBS_SITE_ID,
-            auth: { token: process.env.NETLIFY_PERSONAL_ACCESS_TOKEN }
+            auth: { token: process.env.NETLIFY_BLOBS_ACCESS_TOKEN }
         });
 
         await store.delete(`user_${userId}`);
