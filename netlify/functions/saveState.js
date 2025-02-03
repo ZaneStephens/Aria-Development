@@ -1,9 +1,9 @@
-const fs = require('fs');
-const path = require('path');
+const fetch = require("node-fetch");
 
-const filePath = path.join(__dirname, '../../data.json');
+const kvURL = process.env.NETLIFY_KV_REST_API_URL;
+const kvToken = process.env.NETLIFY_KV_REST_API_TOKEN;
 
-exports.handler = async function(event) {
+exports.handler = async function (event) {
     if (event.httpMethod !== 'POST') {
         return { statusCode: 405, body: 'Method Not Allowed' };
     }
@@ -15,18 +15,47 @@ exports.handler = async function(event) {
         return { statusCode: 400, body: JSON.stringify({ error: 'Invalid JSON' }) };
     }
 
+    const { userId, state } = data;
+    if (!userId || !state) {
+        return {
+            statusCode: 400,
+            body: JSON.stringify({ error: 'Missing userId or state' }),
+        };
+    }
+
     try {
-        let existingData = {};
-        if (fs.existsSync(filePath)) {
-            existingData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        // Store in Netlify KV if available
+        if (kvURL && kvToken) {
+            const kvResponse = await fetch(`${kvURL}/child-tracker-${userId}`, {
+                method: "PUT",
+                headers: {
+                    "Authorization": `Bearer ${kvToken}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(state)
+            });
+
+            if (!kvResponse.ok) {
+                throw new Error(`Netlify KV Storage failed: ${kvResponse.statusText}`);
+            }
+
+            return {
+                statusCode: 200,
+                body: JSON.stringify({ message: "State saved successfully" }),
+            };
         }
 
-        existingData[data.userId] = data.state;
+        // If KV Storage is unavailable, return a message
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: "Netlify KV Storage is not available. Enable KV Storage for persistent storage." })
+        };
 
-        fs.writeFileSync(filePath, JSON.stringify(existingData, null, 2));
-
-        return { statusCode: 200, body: JSON.stringify({ message: 'State saved successfully' }) };
     } catch (error) {
-        return { statusCode: 500, body: JSON.stringify({ error: error.toString() }) };
+        console.error('Error saving state:', error);
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: error.toString() }),
+        };
     }
 };
