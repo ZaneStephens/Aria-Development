@@ -390,4 +390,47 @@ function switchTab(tabId) {
     loadStateFromBackend();
     loadDiaryFromBackend();
   });
-  
+
+  document.addEventListener("DOMContentLoaded", () => {
+    // Existing code for tab switching, state saving, etc.
+    loadStateFromBackend();
+    
+    const resetButton = document.getElementById("resetButton");
+    if (resetButton) {
+      resetButton.addEventListener("click", deleteStateFromBackend);
+    }
+    
+    // ---------------------------
+    // Modal Functionality for Support Buttons
+    // ---------------------------
+    
+    // Attach click event listeners to support buttons to open modals.
+    document.querySelectorAll('.support-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const modalId = button.getAttribute('data-modal');
+        const modal = document.getElementById(modalId);
+        if (modal) {
+          modal.style.display = 'block';
+        }
+      });
+    });
+    
+    // Attach event listeners to close the modals when the close element is clicked.
+    document.querySelectorAll('.modal').forEach(modal => {
+      const closeModal = modal.querySelector('.close');
+      if (closeModal) {
+        closeModal.addEventListener('click', () => {
+          modal.style.display = 'none';
+        });
+      }
+    });
+    
+    // Optionally, close modals when clicking outside the modal content.
+    window.addEventListener('click', (event) => {
+      document.querySelectorAll('.modal').forEach(modal => {
+        if (event.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
+    });
+  });  
