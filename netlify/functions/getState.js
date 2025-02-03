@@ -12,7 +12,7 @@ exports.handler = async function (event) {
     const store = getStore({
       name: "child-tracker-store",
       siteID: process.env.NETLIFY_BLOBS_SITE_ID,
-      auth: { token: process.env.NETLIFY_BLOBS_ACCESS_TOKEN }
+      token: process.env.NETLIFY_BLOBS_ACCESS_TOKEN
     });
 
     const data = await store.get("sharedState");

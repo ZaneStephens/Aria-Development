@@ -73,86 +73,74 @@ document.querySelectorAll('.support-btn').forEach(button => {
     });
   });  
   
+
 // ---------------------------
-// Backend Integration
+// Backend Integration (Shared State Approach)
 // ---------------------------
 
-// Use a default user if no userId exists.
-function generateUserId() {
-    return 'user_' + Math.random().toString(36).substr(2, 9);
-}
-
-// Attempt to retrieve a user ID from localStorage
-let userId = localStorage.getItem('userId');
-
-// If no userId exists, use the default user
-if (!userId) {
-    userId = "defaultUser"; // Shared state for all users
-    localStorage.setItem('userId', userId);
-}
-
+// With the shared state approach, we don't send a userId to the backend.
 async function saveStateToBackend() {
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
     let stateData = {};
     checkboxes.forEach(box => {
-        stateData[box.id] = box.checked;
+      stateData[box.id] = box.checked;
     });
-
+  
     try {
-        const response = await fetch('/.netlify/functions/saveState', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ state: stateData }) // No userId needed
-        });
-        const result = await response.json();
-        console.log('State saved to backend:', result);
+      const response = await fetch('/.netlify/functions/saveState', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ state: stateData }) // no userId needed
+      });
+      const result = await response.json();
+      console.log('State saved to backend:', result);
     } catch (error) {
-        console.error('Error saving state to backend:', error);
+      console.error('Error saving state to backend:', error);
     }
-}
-
-async function loadStateFromBackend() {
+  }
+  
+  async function loadStateFromBackend() {
     try {
-        const response = await fetch('/.netlify/functions/getState'); // No userId needed
-        const result = await response.json();
-        console.log('Loaded state:', result);
-
-        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        checkboxes.forEach(box => {
-            if (result.state && result.state.hasOwnProperty(box.id)) {
-                box.checked = result.state[box.id];
-            }
-        });
+      const response = await fetch('/.netlify/functions/getState'); // no userId needed
+      const result = await response.json();
+      console.log('Loaded state:', result);
+  
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      checkboxes.forEach(box => {
+        if (result.state && result.state.hasOwnProperty(box.id)) {
+          box.checked = result.state[box.id];
+        }
+      });
     } catch (error) {
-        console.error('Error loading state from backend:', error);
+      console.error('Error loading state from backend:', error);
     }
-}
-
-async function deleteStateFromBackend() {
+  }
+  
+  async function deleteStateFromBackend() {
     try {
-        const response = await fetch('/.netlify/functions/deleteState', { // No userId needed
-            method: 'DELETE'
-        });
-        const result = await response.json();
-        console.log('State deleted from backend:', result);
-
-        // Reset UI
-        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        checkboxes.forEach(box => box.checked = false);
+      const response = await fetch('/.netlify/functions/deleteState', {
+        method: 'DELETE'
+      });
+      const result = await response.json();
+      console.log('State deleted from backend:', result);
+  
+      // Reset UI by unchecking all checkboxes
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      checkboxes.forEach(box => box.checked = false);
     } catch (error) {
-        console.error('Error deleting state from backend:', error);
+      console.error('Error deleting state from backend:', error);
     }
-}
-
-// Ensure reset button exists before adding event listener
-document.addEventListener("DOMContentLoaded", () => {
+  }
+  
+  // Add reset button event listener if the element exists
+  document.addEventListener("DOMContentLoaded", () => {
     loadStateFromBackend();
     
     const resetButton = document.getElementById("resetButton");
     if (resetButton) {
-        resetButton.addEventListener("click", deleteStateFromBackend);
+      resetButton.addEventListener("click", deleteStateFromBackend);
     }
-});
+  });
 
   // ---------------------------
   // Summary Generation
