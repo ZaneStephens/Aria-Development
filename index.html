@@ -22,82 +22,97 @@
     <!-- Main Content Area -->
     <main class="content">
       <!-- Child Development Tab -->
-      <section id="development" class="tab-content active">
-        <h1>Child Development Milestones (3–4 Years)</h1>
-        <p>Track Aria’s progress in these key developmental areas. The list includes both expected and advanced milestones.</p>
-        
-        <!-- Gross Motor Skills -->
-        <div class="milestone-group">
-          <h2>Gross Motor Skills</h2>
-          <ul>
-            <li><input type="checkbox" id="gm1"> Runs smoothly and changes direction easily</li>
-            <li><input type="checkbox" id="gm2"> Jumps off both feet and lands steadily</li>
-            <li><input type="checkbox" id="gm3"> Climbs stairs with alternating feet</li>
-            <li><input type="checkbox" id="gm4"> Rides a tricycle confidently</li>
-            <li><input type="checkbox" id="gm5"> Balances on one foot for several seconds</li>
-            <!-- Advanced Milestones -->
-            <li><input type="checkbox" id="gm6"> Skips or gallops with good rhythm</li>
-            <li><input type="checkbox" id="gm7"> Hops continuously on one foot for 10 seconds</li>
-            <li><input type="checkbox" id="gm8"> Throws and catches a large ball with accuracy</li>
-          </ul>
-        </div>
-        
-        <!-- Fine Motor Skills -->
-        <div class="milestone-group">
-          <h2>Fine Motor Skills</h2>
-          <ul>
-            <li><input type="checkbox" id="fm1"> Draws basic shapes (circles and squares)</li>
-            <li><input type="checkbox" id="fm2"> Uses child-safe scissors (with supervision)</li>
-            <li><input type="checkbox" id="fm3"> Manipulates small objects (blocks, puzzles)</li>
-            <!-- Advanced Milestones -->
-            <li><input type="checkbox" id="fm4"> Draws a person with at least 3 body parts</li>
-            <li><input type="checkbox" id="fm5"> Copies simple letters or numbers</li>
-            <li><input type="checkbox" id="fm6"> Cuts out simple shapes from paper</li>
-          </ul>
-        </div>
-        
-        <!-- Language & Communication -->
-        <div class="milestone-group">
-          <h2>Language & Communication</h2>
-          <ul>
-            <li><input type="checkbox" id="lang1"> Speaks in full sentences</li>
-            <li><input type="checkbox" id="lang2"> Follows multi-step instructions</li>
-            <li><input type="checkbox" id="lang3"> Uses a wide vocabulary in conversation</li>
-            <!-- Advanced Milestones -->
-            <li><input type="checkbox" id="lang4"> Tells a detailed story with a clear beginning, middle, and end</li>
-            <li><input type="checkbox" id="lang5"> Asks various “why” and “how” questions</li>
-            <li><input type="checkbox" id="lang6"> Uses descriptive language (colors, sizes, emotions)</li>
-          </ul>
-        </div>
-        
-        <!-- Social & Emotional Development -->
-        <div class="milestone-group">
-          <h2>Social & Emotional Development</h2>
-          <ul>
-            <li><input type="checkbox" id="se1"> Plays cooperatively with peers</li>
-            <li><input type="checkbox" id="se2"> Expresses basic emotions appropriately</li>
-            <li><input type="checkbox" id="se3"> Takes turns and listens to others</li>
-            <!-- Advanced Milestones -->
-            <li><input type="checkbox" id="se4"> Demonstrates empathy and offers comfort to a friend</li>
-            <li><input type="checkbox" id="se5"> Resolves minor conflicts verbally</li>
-            <li><input type="checkbox" id="se6"> Shows leadership or initiative in group play</li>
-          </ul>
-        </div>
-        
-        <!-- Cognitive Development -->
-        <div class="milestone-group">
-          <h2>Cognitive Development</h2>
-          <ul>
-            <li><input type="checkbox" id="cog1"> Recognises basic colors and shapes</li>
-            <li><input type="checkbox" id="cog2"> Counts to 10 or higher</li>
-            <li><input type="checkbox" id="cog3"> Solves simple puzzles</li>
-            <!-- Advanced Milestones -->
-            <li><input type="checkbox" id="cog4"> Sorts objects by multiple attributes (e.g., color and shape)</li>
-            <li><input type="checkbox" id="cog5"> Understands basic time concepts (today, tomorrow, yesterday)</li>
-            <li><input type="checkbox" id="cog6"> Retells events in sequence using memory</li>
-          </ul>
-        </div>
-      </section>
+<section id="development" class="tab-content active">
+    <h1>Child Development Milestones (3–4 Years)</h1>
+    <p>Track Aria’s progress in these key developmental areas. Each section is divided into expected and advanced milestones.</p>
+    
+    <!-- Gross Motor Skills -->
+    <div class="milestone-group">
+      <h2>Gross Motor Skills</h2>
+      <h3 class="subheader">Expected Milestones</h3>
+      <ul class="expected">
+        <li><input type="checkbox" id="gm1"> Runs smoothly and changes direction easily</li>
+        <li><input type="checkbox" id="gm2"> Jumps off both feet and lands steadily</li>
+        <li><input type="checkbox" id="gm3"> Climbs stairs with alternating feet</li>
+        <li><input type="checkbox" id="gm4"> Rides a tricycle confidently</li>
+        <li><input type="checkbox" id="gm5"> Balances on one foot for several seconds</li>
+      </ul>
+      <h3 class="subheader">Advanced Milestones</h3>
+      <ul class="advanced">
+        <li><input type="checkbox" id="gm6"> Skips or gallops with good rhythm <span class="badge">Advanced</span></li>
+        <li><input type="checkbox" id="gm7"> Hops continuously on one foot for 10 seconds <span class="badge">Advanced</span></li>
+        <li><input type="checkbox" id="gm8"> Throws and catches a large ball with accuracy <span class="badge">Advanced</span></li>
+      </ul>
+    </div>
+    
+    <!-- Fine Motor Skills -->
+    <div class="milestone-group">
+      <h2>Fine Motor Skills</h2>
+      <h3 class="subheader">Expected Milestones</h3>
+      <ul class="expected">
+        <li><input type="checkbox" id="fm1"> Draws basic shapes (circles and squares)</li>
+        <li><input type="checkbox" id="fm2"> Uses child-safe scissors (with supervision)</li>
+        <li><input type="checkbox" id="fm3"> Manipulates small objects (blocks, puzzles)</li>
+      </ul>
+      <h3 class="subheader">Advanced Milestones</h3>
+      <ul class="advanced">
+        <li><input type="checkbox" id="fm4"> Draws a person with at least 3 body parts <span class="badge">Advanced</span></li>
+        <li><input type="checkbox" id="fm5"> Copies simple letters or numbers <span class="badge">Advanced</span></li>
+        <li><input type="checkbox" id="fm6"> Cuts out simple shapes from paper <span class="badge">Advanced</span></li>
+      </ul>
+    </div>
+    
+    <!-- Language & Communication -->
+    <div class="milestone-group">
+      <h2>Language & Communication</h2>
+      <h3 class="subheader">Expected Milestones</h3>
+      <ul class="expected">
+        <li><input type="checkbox" id="lang1"> Speaks in full sentences</li>
+        <li><input type="checkbox" id="lang2"> Follows multi-step instructions</li>
+        <li><input type="checkbox" id="lang3"> Uses a wide vocabulary in conversation</li>
+      </ul>
+      <h3 class="subheader">Advanced Milestones</h3>
+      <ul class="advanced">
+        <li><input type="checkbox" id="lang4"> Tells a detailed story with a clear beginning, middle, and end <span class="badge">Advanced</span></li>
+        <li><input type="checkbox" id="lang5"> Asks various “why” and “how” questions <span class="badge">Advanced</span></li>
+        <li><input type="checkbox" id="lang6"> Uses descriptive language (colors, sizes, emotions) <span class="badge">Advanced</span></li>
+      </ul>
+    </div>
+    
+    <!-- Social & Emotional Development -->
+    <div class="milestone-group">
+      <h2>Social & Emotional Development</h2>
+      <h3 class="subheader">Expected Milestones</h3>
+      <ul class="expected">
+        <li><input type="checkbox" id="se1"> Plays cooperatively with peers</li>
+        <li><input type="checkbox" id="se2"> Expresses basic emotions appropriately</li>
+        <li><input type="checkbox" id="se3"> Takes turns and listens to others</li>
+      </ul>
+      <h3 class="subheader">Advanced Milestones</h3>
+      <ul class="advanced">
+        <li><input type="checkbox" id="se4"> Demonstrates empathy and offers comfort to a friend <span class="badge">Advanced</span></li>
+        <li><input type="checkbox" id="se5"> Resolves minor conflicts verbally <span class="badge">Advanced</span></li>
+        <li><input type="checkbox" id="se6"> Shows leadership or initiative in group play <span class="badge">Advanced</span></li>
+      </ul>
+    </div>
+    
+    <!-- Cognitive Development -->
+    <div class="milestone-group">
+      <h2>Cognitive Development</h2>
+      <h3 class="subheader">Expected Milestones</h3>
+      <ul class="expected">
+        <li><input type="checkbox" id="cog1"> Recognises basic colors and shapes</li>
+        <li><input type="checkbox" id="cog2"> Counts to 10 or higher</li>
+        <li><input type="checkbox" id="cog3"> Solves simple puzzles</li>
+      </ul>
+      <h3 class="subheader">Advanced Milestones</h3>
+      <ul class="advanced">
+        <li><input type="checkbox" id="cog4"> Sorts objects by multiple attributes <span class="badge">Advanced</span></li>
+        <li><input type="checkbox" id="cog5"> Understands basic time concepts (today, tomorrow, yesterday) <span class="badge">Advanced</span></li>
+        <li><input type="checkbox" id="cog6"> Retells events in sequence using memory <span class="badge">Advanced</span></li>
+      </ul>
+    </div>
+  </section>
 
       <!-- Parenting Advice Tab -->
       <section id="parenting" class="tab-content">

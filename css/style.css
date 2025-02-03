@@ -1,4 +1,4 @@
-/* Reset & Global Styles */
+/* Global Reset & Font */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -26,7 +26,8 @@ body {
   padding: 2rem 1rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* Align items at the top */
+  justify-content: flex-start;
 }
 .sidebar ul {
   list-style: none;
@@ -81,11 +82,42 @@ p {
 }
 .milestone-group h2 {
   color: #2a5d84;
+  margin-bottom: 0.75rem;
+}
+
+/* Subheader for Expected and Advanced Milestones */
+.subheader {
+  font-size: 1.1rem;
+  color: #1f4561;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 0.25rem;
+}
+
+/* Separate expected and advanced lists */
+ul.expected,
+ul.advanced {
+  list-style: none;
   margin-bottom: 1rem;
 }
-.milestone-group ul {
-  list-style: none;
+ul.advanced li {
+  /* Optionally, you can italicize advanced milestones or use a different color */
+  font-style: italic;
+  color: #d9534f;
 }
+
+/* Badge for Advanced Milestones */
+.badge {
+  background: #d9534f;
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  margin-left: 0.5rem;
+}
+
+/* List Item Styles */
 .milestone-group li {
   padding: 0.5rem 0;
   font-size: 1rem;
