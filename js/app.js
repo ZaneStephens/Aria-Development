@@ -22,7 +22,7 @@ function switchTab(tabId) {
     });
   });
   
-  // Save checkbox state in localStorage
+  // Save checkbox state in localStorage (client-only)
   function saveState() {
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
     checkboxes.forEach(box => {
@@ -31,7 +31,7 @@ function switchTab(tabId) {
     saveStateToBackend(); // Also save to backend
   }
   
-  // Load checkbox state from localStorage
+  // Load checkbox state from localStorage (client-only)
   function loadState() {
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
     checkboxes.forEach(box => {
@@ -42,44 +42,17 @@ function switchTab(tabId) {
     });
   }
   
-  // Attach change listeners to all checkboxes to save state automatically
+  // Attach change listeners to all checkboxes
   document.querySelectorAll('input[type="checkbox"]').forEach(box => {
     box.addEventListener('change', saveState);
   });
-
-  // Modal functionality for support buttons
-document.querySelectorAll('.support-btn').forEach(button => {
-    button.addEventListener('click', () => {
-      const modalId = button.getAttribute('data-modal');
-      const modal = document.getElementById(modalId);
-      if (modal) {
-        modal.style.display = 'block';
-      }
-    });
-  });
   
-  // Close modals when the close button is clicked or when clicking outside the modal content
-  document.querySelectorAll('.modal').forEach(modal => {
-    // When the user clicks on <span class="close">, close the modal
-    modal.querySelector('.close').addEventListener('click', () => {
-      modal.style.display = 'none';
-    });
-    
-    // When the user clicks anywhere outside of the modal content, close it
-    window.addEventListener('click', (event) => {
-      if (event.target === modal) {
-        modal.style.display = 'none';
-      }
-    });
-  });  
+  // ---------------------------
+  // Backend Integration (Shared State Approach)
+  // ---------------------------
   
-
-// ---------------------------
-// Backend Integration (Shared State Approach)
-// ---------------------------
-
-// With the shared state approach, we don't send a userId to the backend.
-async function saveStateToBackend() {
+  // With the shared state approach, we do not send a userId to the backend.
+  async function saveStateToBackend() {
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
     let stateData = {};
     checkboxes.forEach(box => {
@@ -118,7 +91,7 @@ async function saveStateToBackend() {
   
   async function deleteStateFromBackend() {
     try {
-      const response = await fetch('/.netlify/functions/deleteState', {
+      const response = await fetch('/.netlify/functions/deleteState', { // no userId needed
         method: 'DELETE'
       });
       const result = await response.json();
@@ -135,21 +108,20 @@ async function saveStateToBackend() {
   // Add reset button event listener if the element exists
   document.addEventListener("DOMContentLoaded", () => {
     loadStateFromBackend();
-    
+  
     const resetButton = document.getElementById("resetButton");
     if (resetButton) {
       resetButton.addEventListener("click", deleteStateFromBackend);
     }
   });
-
+  
   // ---------------------------
   // Summary Generation
   // ---------------------------
-  // Enhanced Summary Generation Function: Detailed, Personalized Report Card
-function generateSummary() {
+  function generateSummary() {
     let summaryText = '<h2>Child Development Report Card</h2>';
   
-    // Define each developmental area with IDs and tailored recommendations
+    // Define each developmental area with expected and advanced milestone IDs and recommendations
     const devAreas = [
       {
         name: 'Gross Motor Skills',
@@ -188,7 +160,7 @@ function generateSummary() {
       }
     ];
   
-    // Process each developmental area and build its "report card" section
+    // Build report card sections for each developmental area
     devAreas.forEach(area => {
       let expCount = 0;
       area.expected.forEach(id => {
@@ -228,7 +200,7 @@ function generateSummary() {
       summaryText += `</div>`;
     });
   
-    // Parenting Goals Summary with a Detailed Report
+    // Parenting Goals Report (tracked locally)
     const parentingGoals = [
       { id: 'par1', label: 'Establish Daily Schedule' },
       { id: 'par2', label: 'Involve Child in Decisions' },
@@ -271,116 +243,151 @@ function generateSummary() {
   
   // Attach event listener to the Generate Summary button
   document.getElementById('generateSummaryBtn').addEventListener('click', generateSummary);
-
-// ---------------------------
-// Achievement Logging and Diary Functionality
-// ---------------------------
-
-let currentAchievementCheckbox = null;
-
-// When a checkbox is changed, prompt for achievement details if it’s newly checked
-function handleCheckboxForDiary(event) {
-  const checkbox = event.target;
-  // Only trigger if checkbox is checked and not already logged
-  if (checkbox.checked && !checkbox.dataset.logged) {
-    currentAchievementCheckbox = checkbox;
-    // Assume the achievement text is the text content of the parent li (excluding the checkbox)
-    const achievementText = checkbox.parentElement.textContent.trim();
-    document.getElementById('achievementLabel').textContent = achievementText;
-    // Clear any previous notes
-    document.getElementById('achievementNotes').value = '';
-    // Show the modal
-    document.getElementById('achievementModal').style.display = 'block';
-  }
-}
-
-// Attach handler to all checkboxes
-document.querySelectorAll('input[type="checkbox"]').forEach(box => {
-  box.addEventListener('change', handleCheckboxForDiary);
-});
-
-// Modal handling for achievement logging
-const achievementModal = document.getElementById('achievementModal');
-const closeModal = achievementModal.querySelector('.close');
-
-closeModal.addEventListener('click', () => {
-  achievementModal.style.display = 'none';
-});
-
-document.getElementById('submitAchievement').addEventListener('click', () => {
-  const notes = document.getElementById('achievementNotes').value.trim();
-  logAchievement(notes);
-  achievementModal.style.display = 'none';
-});
-
-document.getElementById('skipAchievement').addEventListener('click', () => {
-  logAchievement('');
-  achievementModal.style.display = 'none';
-});
-
-function logAchievement(notes) {
-  if (!currentAchievementCheckbox) return;
-  // Mark this checkbox as logged so that we do not prompt again
-  currentAchievementCheckbox.dataset.logged = "true";
-  // Create a diary entry with timestamp
-  const timestamp = new Date().toISOString();
-  const achievementText = currentAchievementCheckbox.parentElement.textContent.trim();
-  const diaryEntry = {
-    id: currentAchievementCheckbox.id,
-    achievement: achievementText,
-    note: notes,
-    timestamp: timestamp
-  };
-  // Retrieve existing diary entries from localStorage (or initialize an empty array)
-  let diaryEntries = JSON.parse(localStorage.getItem('diaryEntries')) || [];
-  diaryEntries.push(diaryEntry);
-  localStorage.setItem('diaryEntries', JSON.stringify(diaryEntries));
-  // Update the Diary tab view
-  loadDiary();
-  // Clear currentAchievementCheckbox for future logging
-  currentAchievementCheckbox = null;
-}
-
-// Function to load diary entries and display them in the Diary tab, grouped by date
-function loadDiary() {
-  const diaryContainer = document.getElementById('diaryContent');
-  let diaryEntries = JSON.parse(localStorage.getItem('diaryEntries')) || [];
   
-  // Sort entries by timestamp ascending (oldest first) or descending as you prefer
-  diaryEntries.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+  // ---------------------------
+  // Achievement Logging and Diary Functionality
+  // ---------------------------
   
-  // Group entries by date (YYYY-MM-DD)
-  const groupedEntries = {};
-  diaryEntries.forEach(entry => {
-    const date = entry.timestamp.split('T')[0]; // Extract date part
-    if (!groupedEntries[date]) {
-      groupedEntries[date] = [];
+  let currentAchievementCheckbox = null;
+  
+  // When a checkbox is changed, prompt for achievement details if it’s newly checked
+  function handleCheckboxForDiary(event) {
+    const checkbox = event.target;
+    // Only trigger if checkbox is checked and not already logged
+    if (checkbox.checked && !checkbox.dataset.logged) {
+      currentAchievementCheckbox = checkbox;
+      // Use the text content of the parent li as the achievement description
+      const achievementText = checkbox.parentElement.textContent.trim();
+      document.getElementById('achievementLabel').textContent = achievementText;
+      // Clear previous notes
+      document.getElementById('achievementNotes').value = '';
+      // Show the modal
+      document.getElementById('achievementModal').style.display = 'block';
     }
-    groupedEntries[date].push(entry);
+  }
+  
+  // Attach handler to all checkboxes for diary logging
+  document.querySelectorAll('input[type="checkbox"]').forEach(box => {
+    box.addEventListener('change', handleCheckboxForDiary);
   });
   
-  // Build HTML to display entries grouped by date
-  let output = '';
-  // Optionally, sort dates descending (most recent first)
-  const sortedDates = Object.keys(groupedEntries).sort((a, b) => new Date(b) - new Date(a));
-  sortedDates.forEach(date => {
-    output += `<div class="diary-date-group">`;
-    output += `<h3>${date}</h3>`;
-    groupedEntries[date].forEach(entry => {
-      // Format the time portion of the timestamp
-      const time = new Date(entry.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-      output += `<div class="diary-entry">`;
-      output += `<p><strong>${time}</strong>: ${entry.achievement}</p>`;
-      if (entry.note) {
-        output += `<p class="diary-note">Note: ${entry.note}</p>`;
+  // Modal handling for achievement logging
+  const achievementModal = document.getElementById('achievementModal');
+  const closeModal = achievementModal.querySelector('.close');
+  
+  closeModal.addEventListener('click', () => {
+    achievementModal.style.display = 'none';
+  });
+  
+  document.getElementById('submitAchievement').addEventListener('click', () => {
+    const notes = document.getElementById('achievementNotes').value.trim();
+    logAchievement(notes);
+    achievementModal.style.display = 'none';
+  });
+  
+  document.getElementById('skipAchievement').addEventListener('click', () => {
+    logAchievement('');
+    achievementModal.style.display = 'none';
+  });
+  
+  function logAchievement(notes) {
+    if (!currentAchievementCheckbox) return;
+    // Mark this checkbox as logged so that we do not prompt again
+    currentAchievementCheckbox.dataset.logged = "true";
+    // Create a diary entry with timestamp
+    const timestamp = new Date().toISOString();
+    const achievementText = currentAchievementCheckbox.parentElement.textContent.trim();
+    const diaryEntry = {
+      id: currentAchievementCheckbox.id,
+      achievement: achievementText,
+      note: notes,
+      timestamp: timestamp
+    };
+    // Retrieve existing diary entries from localStorage (for local caching)
+    let diaryEntries = JSON.parse(localStorage.getItem('diaryEntries')) || [];
+    diaryEntries.push(diaryEntry);
+    localStorage.setItem('diaryEntries', JSON.stringify(diaryEntries));
+    // Sync the diary entries with the backend
+    syncDiaryToBackend(diaryEntries);
+    // Update the Diary tab view
+    loadDiary();
+    // Clear currentAchievementCheckbox for future logging
+    currentAchievementCheckbox = null;
+  }
+  
+  // Function to sync diary entries to the backend
+  async function syncDiaryToBackend(diaryEntries) {
+    try {
+      const response = await fetch('/.netlify/functions/saveDiary', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ diaryEntries })
+      });
+      const result = await response.json();
+      console.log('Diary synced to backend:', result);
+    } catch (error) {
+      console.error('Error syncing diary to backend:', error);
+    }
+  }
+  
+  // Function to load diary entries from the backend
+  async function loadDiaryFromBackend() {
+    try {
+      const response = await fetch('/.netlify/functions/getDiary');
+      const result = await response.json();
+      console.log('Loaded diary from backend:', result);
+      if (result.diary) {
+        localStorage.setItem('diaryEntries', JSON.stringify(result.diary));
       }
+      loadDiary();
+    } catch (error) {
+      console.error('Error loading diary from backend:', error);
+    }
+  }
+  
+  // Function to load diary entries and display them in the Diary tab, grouped by date
+  function loadDiary() {
+    const diaryContainer = document.getElementById('diaryContent');
+    let diaryEntries = JSON.parse(localStorage.getItem('diaryEntries')) || [];
+    
+    // Sort entries by timestamp ascending (oldest first)
+    diaryEntries.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+    
+    // Group entries by date (YYYY-MM-DD)
+    const groupedEntries = {};
+    diaryEntries.forEach(entry => {
+      const date = entry.timestamp.split('T')[0];
+      if (!groupedEntries[date]) {
+        groupedEntries[date] = [];
+      }
+      groupedEntries[date].push(entry);
+    });
+    
+    // Build HTML to display grouped entries
+    let output = '';
+    // Sort dates descending (most recent first)
+    const sortedDates = Object.keys(groupedEntries).sort((a, b) => new Date(b) - new Date(a));
+    sortedDates.forEach(date => {
+      output += `<div class="diary-date-group">`;
+      output += `<h3>${date}</h3>`;
+      groupedEntries[date].forEach(entry => {
+        const time = new Date(entry.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        output += `<div class="diary-entry">`;
+        output += `<p><strong>${time}</strong>: ${entry.achievement}</p>`;
+        if (entry.note) {
+          output += `<p class="diary-note">Note: ${entry.note}</p>`;
+        }
+        output += `</div>`;
+      });
       output += `</div>`;
     });
-    output += `</div>`;
+    
+    diaryContainer.innerHTML = output;
+  }
+  
+  // Load diary entries on page load (from backend sync)
+  window.addEventListener('load', () => {
+    loadStateFromBackend();
+    loadDiaryFromBackend();
   });
   
-  diaryContainer.innerHTML = output;
-}
-
-// Load diary entries on page load so that the Diary tab is up to date
-window.addEventListener('load', loadDiary); 
